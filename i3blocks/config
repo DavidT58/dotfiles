@@ -1,0 +1,37 @@
+#Language
+[key-lang]
+command=/home/david/.config/i3blocks/language
+label=Layout
+interval=once
+
+
+#Volume
+[volume]
+command=/home/david/.config/i3blocks/volume
+LABEL=♪ 
+label=vol 
+interval=1
+instance=Master
+signal=10
+STEP=5%
+color=#FF0000
+#MIXER=[determined automatically]
+#SCONTROL=[determined automatically]
+
+
+# Guess the weather hourly
+[weather]
+command=curl -Ss 'https://wttr.in?0&T&Q' | cut -c 16- | head -2 | xargs echo
+interval=3600
+color=#A4C2F4
+
+# Query my default IP address only on startup
+[ip]
+command=ifconfig | grep -Eo '(addr:)?([0-9]*\.){3}[0-9]*' | head -n1 | awk '{ print "IP:" $1 }'
+interval=once
+color=#91E78B
+
+# Update time every 5 seconds
+[time]
+command=date '+%d-%m-%Y %H:%M:%S'
+interval=5

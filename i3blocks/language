@@ -1,0 +1,8 @@
+#!/bin/bash
+
+LANG=$(./xkblayout-state print "%s")
+
+echo ": $LANG"
+
+exit 0
+
