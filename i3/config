@@ -217,7 +217,7 @@ assign [class="chrome"] 2
 for_window [class="chrome"] fullscreen enable
 
 #exec --no-startup-id i3-sensible-terminal
-exec --no-startup-id google-chrome-stable
+#exec --no-startup-id google-chrome-stable
 
 exec xset dpms 600
 

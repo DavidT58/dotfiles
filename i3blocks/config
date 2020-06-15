@@ -27,7 +27,7 @@ color=#A4C2F4
 
 # Query my default IP address only on startup
 [ip]
-command=ifconfig | grep -Eo '(addr:)?([0-9]*\.){3}[0-9]*' | head -n1 | awk '{ print "IP:" $1 }'
+command=ip -4 addr show enp5s0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}'
 interval=once
 color=#91E78B
 
