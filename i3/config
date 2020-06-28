@@ -206,7 +206,7 @@ gaps outer 5
  client.urgent #00C1FF #00C1FF #000088 #00C1FF
 
 exec xrdb ~/.Xresources
-exec ~/.screenlayout/default-hdmi.sh
+exec ~/.screenlayout/def.sh
 
 workspace 1 output LVDS1
 workspace 2 output HDMI1
@@ -224,6 +224,7 @@ exec xset dpms 600
 bindsym Home exec python ~/bulb.py
 bindsym $mod+grave exec google-chrome-stable
 bindsym $mod+backslash exec thunar 
+bindsym Print exec maim -s ~/Pictures/$(date '+%Y-%m-%d.%H:%M:%S').png
 
 exec "setxkbmap -layout 'us,rs,rs(latin)' -option grp:alt_shift_toggle"
 exec ~/.fehbg 

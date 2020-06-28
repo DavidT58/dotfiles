@@ -2,7 +2,7 @@
 [key-lang]
 command=/home/david/.config/i3blocks/language
 label=Layout
-interval=once
+interval=1
 
 
 #Volume
@@ -26,10 +26,15 @@ interval=3600
 color=#A4C2F4
 
 # Query my default IP address only on startup
-[ip]
+[ip1]
 command=ip -4 addr show enp5s0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}'
 interval=once
 color=#91E78B
+
+[ip2]
+command=wget -qO - icanhazip.com
+interval=once
+color=#F5E507
 
 # Update time every 5 seconds
 [time]
