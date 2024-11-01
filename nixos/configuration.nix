@@ -8,6 +8,8 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      <nixos-hardware/lenovo/thinkpad/x390>
+      ./home-manager.nix
     ];
 
   # Bootloader.
@@ -28,7 +30,13 @@
   time.timeZone = "Europe/Belgrade";
 
   # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
+  i18n = {
+    defaultLocale = "en_US.UTF-8";
+    extraLocaleSettings = {
+      LC_TIME = "en_GB.UTF-8";
+    };
+
+  };
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
@@ -38,13 +46,11 @@
   services.xserver.desktopManager.gnome.enable = true;
 
   # Configure keymap in X11
-  services.xserver = {
-    xkb.layout = "us";
-    xkb.variant = "";
-  };
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
+  hardware.sane.enable = true;
+  hardware.sane.extraBackends = [ pkgs.hplipWithPlugin ];
 
   # Enable sound with pipewire.
   hardware.pulseaudio.enable = false;
@@ -62,45 +68,26 @@
     #media-session.enable = true;
   };
 
-  services.fprintd = {
-     enable = true;
-     package = pkgs.fprintd-tod;
-     tod = {
-       enable = true;
-       driver = pkgs.libfprint-2-tod1-vfs0090;
-     };
-   };
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
 
   security.sudo.wheelNeedsPassword = false;
+
+  programs.zsh.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.david = {
     isNormalUser = true;
     description = "David";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" "scanner" "lp" ];
+    shell = pkgs.zsh;
+
     packages = with pkgs; [
-      google-chrome
-      htop
-      terminator
-      rustdesk
-      kubectl
-      kubernetes-helm
-      kubectx
-      vscode
-      gh 
-      qbittorrent
-      vlc
-      signal-desktop
-      hcloud
-      opentofu
-      terragrunt
+      home-manager
     ];
   };
 
   programs.ssh.startAgent = true;
+
+  virtualisation.docker.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -109,23 +96,10 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-     vim 
-     wget
-     git
+    vim
+    wget
+    git
   ];
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
@@ -134,9 +108,8 @@
   networking.firewall.enable = false;
   networking.firewall.checkReversePath = false;
 
-  networking.extraHosts = 
+  networking.extraHosts =
     ''
-      192.168.2.10	david-pc
     '';
 
   # This value determines the NixOS release from which the default
